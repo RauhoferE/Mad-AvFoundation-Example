@@ -36,7 +36,7 @@ struct CameraPreview: UIViewRepresentable {
         
         // Convenience property
         // layer is delcared as CALAyer so you have to cast it to reach session
-        // We can simly force cast it since the line above guarantees the layer has this type
+        // We can simlpy force cast it since the line above guarantees the layer has this type
         var previewLayer: AVCaptureVideoPreviewLayer{
             layer as! AVCaptureVideoPreviewLayer
         }

@@ -33,7 +33,7 @@ nonisolated final class Camera:NSObject, @unchecked Sendable {
             session.sessionPreset = .photo
             
             // Asks system for a physical camera (wide angel, video camera rather than microphone, and the camera on the back)
-            if let camera = AVCaptureDevice.default(.init(rawValue: "builtInWideAngleCamera"), for: .video, position: .back),
+            if let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
                // Wraps camera as an input the session can use
                // try? turns any error into nil
                let input = try? AVCaptureDeviceInput(device: camera),
@@ -73,6 +73,7 @@ nonisolated final class Camera:NSObject, @unchecked Sendable {
         sessionQueue.async{
             [self] in
             // Asks photo output to take one picture with the default options described in the photo settigns
+            // You can also change things like flash
             // The delate is where the result is send
             photoOutput.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
             
@@ -94,6 +95,9 @@ nonisolated final class Camera:NSObject, @unchecked Sendable {
 // Nonisolated needed because otherwise swift thinks the delegate runs in the main thread
 nonisolated extension Camera: AVCapturePhotoCaptureDelegate {
     // This method is called when the photo is ready
+    // Output is the photo output that took the the picture
+    // photo is the result
+    // and an optional error
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         // TUrns photo into bytes
         // The guard is only here to catch if something goes wrong
